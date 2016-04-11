@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -91,12 +90,16 @@ public class TicketProgramGUI extends JFrame {
                         JOptionPane.showMessageDialog(TicketProgramGUI.this, "None selected");
                         return;
                     }
-                    ticketsModel.removeElement(toDelete);
+                    if (JOptionPane.OK_OPTION == JOptionPane.showConfirmDialog(TicketProgramGUI.this, "Are you sure you want to delete and exit?", "Delete?", JOptionPane.OK_CANCEL_OPTION)) {
+                            addTicketsJList.clearSelection();
+                        ticketsModel.removeElement(toDelete);
 
-                    // toDelete = addTicketsJList.clearSelection();
-                    addTicketsJList.clearSelection();
+                        // toDelete = addTicketsJList.clearSelection();
+                        addTicketsJList.clearSelection();
+                    }
                     break;
                 }
+                    addTicketsJList.clearSelection();
 
             }
         });
@@ -109,8 +112,6 @@ public class TicketProgramGUI extends JFrame {
                 String enterSolution = null;
                 Ticket toResolve = null;
                 FileWriter writer = null;
-                try {
-                    writer = new FileWriter("File_Resolved_Tickets.txt");
                     for (int i = 0; i < ticketsModel.size(); i++) {
                         toResolve = addTicketsJList.getSelectedValue();
 //                toDelete = addTicketsJList.clearSelection();
@@ -118,7 +119,10 @@ public class TicketProgramGUI extends JFrame {
                             JOptionPane.showMessageDialog(TicketProgramGUI.this, "None selected");
                             return;
                         }
-                        if (JOptionPane.OK_OPTION == JOptionPane.showConfirmDialog(TicketProgramGUI.this, "Are you sure you want to save and exit?", "Exit?", JOptionPane.OK_CANCEL_OPTION)) {
+                        enterSolution = JOptionPane.showInputDialog("Enter solution");
+
+                        if (JOptionPane.OK_OPTION == JOptionPane.showConfirmDialog(TicketProgramGUI.this, "Are you sure you want to save as Resolved and exit?", "Exit?", JOptionPane.OK_CANCEL_OPTION)) {
+                            addTicketsJList.clearSelection();
                             //Save all of the data...
                             resolvedTicketsModel.addElement(toResolve);
                             resolvedTicketsModel.addElement("Solution: " + enterSolution);
@@ -129,9 +133,7 @@ public class TicketProgramGUI extends JFrame {
                         }
                         break;
                     }
-                } catch (IOException ie) {
-                    JOptionPane.showMessageDialog(TicketProgramGUI.this, "File not found");
-                }
+                        addTicketsJList.clearSelection();
 
 
 //                String toResolve = String.valueOf(addTicketsJList.getSelectedValue());
